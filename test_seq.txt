@@ -1,4 +1,4 @@
 >Rosalind_14
-ACGTACGTGACG
+AACCTTGG
 >Rosalind_18
-GTA
+ACACTGTGA

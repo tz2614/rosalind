@@ -1,11 +1,22 @@
+#!/usr/bin/env python   
+
+"""
+Given: Two DNA strings s and t (each of length at most 1 kbp) in FASTA format.
+
+Return: One collection of indices of s in which the symbols of t appear as a subsequence of s. If multiple solutions exist, you may return any one.
+
+>>> problem('ACGTACGTGACG', 'GTA')
+3 4 5
+"""
+
+
 import sys
 
-def findmotif(fasta):
-    with open (fasta) as fasta_filehandle: 
+def findmotif(dataset):
+    with open (dataset) as fasta_filehandle: 
 
         DNA = ""
         motif = ""
-        positions = []
         # count keeps track of the number of DNA strings
         count = 0    
     
@@ -13,8 +24,7 @@ def findmotif(fasta):
             line = line.strip()
             
             if line.startswith(">"):
-                count += 1
-                continue  
+                count += 1  
             # create the DNA string
             elif count == 1:
                 DNA += line
@@ -22,25 +32,21 @@ def findmotif(fasta):
             elif count > 1:
                 motif += line
 
+        positions = []
         DNA = list(DNA)
+        #print DNA
         motif = list(motif)
-        count = 0
-        pos = 0
+        #print motif
+        basecount = 0
 
-        for j, motifbase in enumerate (motif):
+        for motifbase in motif:
 
-            for i, DNAbase in enumerate(DNA[pos+1:]):
+            i = DNA.index(motifbase) + 1
+            basecount += i
+            positions.append(basecount)
+            DNA = DNA[i:]
 
-                if motif[j] == DNA[i]:
-                    pos = i
-                    count += 1
-                    positions.append(pos+1)
-
-                if count == len(motif):
-                    print "count: ", count
-                    print "length of motif: ", len(motif)
-                    break 
-                    return positions
-
-fasta = sys.argv[1]
-print findmotif(fasta)
+        return positions
+  
+dataset = sys.argv[1]
+print ' '.join(map(str, findmotif(dataset)))
