@@ -10,8 +10,6 @@ exist, you may output any one.
 'ATGCATGAT'
 """
 
-from longestmotif import lcs
-import parse_fasta
 import sys
 
 def supersequence(s, t):
