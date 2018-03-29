@@ -12,7 +12,7 @@ def parse_fasta(dataset):
         else:
             records[record_id] += line
     return records
-
+    
 if __name__ == '__main__':
 
 	dataset = sys.argv[1]

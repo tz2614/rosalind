@@ -1,4 +1,4 @@
->Rosalind_14
-AACCTTGG
->Rosalind_18
-ACACTGTGA
+>Rosalind_39
+PLEASANTLY
+>Rosalind_11
+MEANLY
