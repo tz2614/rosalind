@@ -113,7 +113,7 @@ def alignment_score(s, t, scores, gap):
 if __name__ == '__main__':
 
 	matrix_file = sys.argv[1]
-	dataset = open(sys.argv[2]).read()
+	dataset = open(sys.argv[2]).read() # use pam250 matrix
 	s, t = parse_fasta(dataset).values()
 	alignment =  alignment_score(s, t, scoring_matrix(matrix_file), -5)
 	print ('\n'.join(alignment))

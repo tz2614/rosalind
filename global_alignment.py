@@ -71,7 +71,7 @@ def global_align(s, t, scores, gap):
 if __name__ == '__main__':
 
 	matrix_file = sys.argv[1]
-	dataset = open(sys.argv[2]).read()
+	dataset = open(sys.argv[2]).read() # use blosum62
 	s, t = parse_fasta(dataset).values()
 	max_score = global_align(s, t, scoring_matrix(matrix_file), -5)
 	print (max_score)
