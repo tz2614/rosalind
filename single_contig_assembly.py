@@ -34,15 +34,18 @@ def match_seq(seq, seq_list):
 		smaller areas of overlap with other sequences until just over half len(seq).
 		Stops at the first case of overlap, returns a superstring combining the two sequences.
 	"""
-	half = int(len(seq)/2)
+	half = len(seq)/2
 
-	for i in range(len(seq)-1, half, -1):
-		overlap = seq[len(seq)-i:]
+	for i in range(len(seq)-1, int(half), -1):
+		overlap = seq[(len(seq)-i):]
+		#print overlap
 
 		for seq2 in seq_list:
-			if seq2 != seq:
-				if seq2[:i] == overlap:
-					return seq[:len(seq)-1] + seq2
+			if seq2 != None:
+				if seq2 != seq:
+					if seq2[:i] == overlap:
+						print seq[:(len(seq)-1)] + seq2
+						return seq[:(len(seq)-1)] + seq2
 
 def shortest_contig(seq_list):
 	""" Iteratively create overlapping superstrings until only one is left
@@ -53,14 +56,16 @@ def shortest_contig(seq_list):
 		new_list = []
 		
 		for seq in seq_list:
-			match = match_seq(seq, seq_list)
+			if seq != None:
+				match = match_seq(seq, seq_list)
 			if match != []:
 				new_list.append(match)
 
 		seq_list = new_list
-		print seq_list
+		#print seq_list
 
-	return seq_list[0]
+	else:
+		return seq_list[0]
 
 if __name__ == '__main__':
 	
