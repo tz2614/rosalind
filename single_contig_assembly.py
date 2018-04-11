@@ -34,18 +34,18 @@ def match_seq(seq, seq_list):
 		smaller areas of overlap with other sequences until just over half len(seq).
 		Stops at the first case of overlap, returns a superstring combining the two sequences.
 	"""
-	half = len(seq)/2
+	half = int(len(seq)/2)
+	#print half
 
 	for i in range(len(seq)-1, int(half), -1):
 		overlap = seq[(len(seq)-i):]
 		#print overlap
 
 		for seq2 in seq_list:
-			if seq2 != None:
-				if seq2 != seq:
-					if seq2[:i] == overlap:
-						print seq[:(len(seq)-1)] + seq2
-						return seq[:(len(seq)-1)] + seq2
+			if seq2 != seq:
+				if seq2[:i] == overlap:
+					print seq[:(len(seq)-1)] + seq2
+					return seq[:(len(seq)-1)] + seq2
 
 def shortest_contig(seq_list):
 	""" Iteratively create overlapping superstrings until only one is left
@@ -64,15 +64,15 @@ def shortest_contig(seq_list):
 		seq_list = new_list
 		#print seq_list
 
-	else:
-		return seq_list[0]
+	return seq_list[0]
 
 if __name__ == '__main__':
 	
 	# parse fasta file containing the fasta sequences to the variable seqs
 	seqs = parse_fasta(open(sys.argv[1]).read())
-	seq_list = []
-	for seq in seqs.values():
-		seq_list.append(seq)
-	print (shortest_contig(seq_list))
+	
+	# find the shortest superstring.
+	results = shortest_contig(seqs)
+
+	print (shortest_contig(results))
 
