@@ -15,48 +15,36 @@ integer representing the edge's parent node, followed by the integer
 representing the edge's child node, and finally the symbol labeling the edge.
 """
 
+from itertools import count
 import sys
 
-class Node:
-	mark_overall = 0
+class Trie(object):
+    def __init__(self):
+        self.counter = count(start = 1)
+        self.root = [next(self.counter), {}]
 
-	def __init__(self):
-		self.s = {}
-		Node.mark_overall += 1
-		self.mark = Node.mark_overall
+    def insert(self, bp):
+        node = self.root
+        for ch in bp:
+            if ch not in node[1]:
+                node[1][ch] = [next(self.counter), {}]
+            
+            node = node[1][ch]
 
-	def __repr__(self):
-		return 'Node (mark={}, d={})'.format(self.mark, self.s)
-
-def make_list(strings):
-	root = Node()
-
-	for x,s in enumerate(strings, 1):
-		current = root
-		for c in s:
-			if c not in current.s:
-				current.s[c] = Node()
-			current = current.s[c]
-
-	return root
-
-def format_answer(root, answer=[]):
-	for x in root.s:
-		answer.append((root.mark, root.s[x].mark, x))
-		format_answer(root.s[x], answer)
-
-	return answer
+def format_output(node):
+    for ch, node2 in node[1].iteritems():
+        print node[0], node2[0], ch
+        format_output(node2)
+        
+def get_adjency_list(bps):
+    trie = Trie()
+    for bp in bps:
+        trie.insert(bp)
+    return trie.root
 
 if __name__ == '__main__':
-
-	dataset = sys.argv[1]
-	with open(dataset) as data_file:
-		strings = data_file.read().strip().split('\n')
-
-	root = make_list(strings)
-
-	with open('answer.txt', 'w') as outfile:
-		for i in format_answer(root):
-			answer = ' '.join(map(str, i))
-			outfile.write(answer + '\n')
-
+    dataset = open(sys.argv[1]).readlines()
+    dataset = [l.strip() for l in dataset if l.strip()]
+    
+    with open('answer.txt', 'w') as outfile:
+    	outfile.write(format_output(get_adjency_list(dataset)))

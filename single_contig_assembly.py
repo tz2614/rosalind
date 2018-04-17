@@ -17,17 +17,29 @@ corresponding to a reconstructed chromosome).
 
 import sys
 
-def parse_fasta(dataset):
-    "Parses data in FASTA format, returning a dictionary of ID's and values"
-    records = {}
-    record_id = None
-    for line in [l.strip() for l in dataset.splitlines()]:
-        if line.startswith('>'):
-            record_id = line[1:]
-            records[record_id] = ""
+def parse_fasta(path, no_id=True):
+    ''' Read in a Fasta file. If no_id is set to False, return a dictonary of
+        sequences with associated headers; otherwise return a list of 
+        sequences only.
+    '''
+    ids = []
+    seqs = []
+    
+    with open(path, 'r') as f:
+        for line in f.readlines():
+            if line.startswith('>'):
+                ids.append(line[1:].strip())
+                seqs.append('')
+            else:
+                seqs[-1] += line.strip()
+
+    if no_id == True:
+        if len(seqs) > 1:
+            return seqs
         else:
-            records[record_id] += line
-    return records
+            return seqs[0]
+    else:
+        return dict(zip(ids, seqs))
 
 def match_seq(seq, seq_list):
 	""" starting with length len(seq)-1, look for iteratively smaller and 
@@ -37,15 +49,16 @@ def match_seq(seq, seq_list):
 	half = int(len(seq)/2)
 	#print half
 
-	for i in range(len(seq)-1, int(half), -1):
-		overlap = seq[(len(seq)-i):]
+	for i in range(len(seq)-1, half, -1):
+		overlap = seq[len(seq)-i:]
 		#print overlap
 
 		for seq2 in seq_list:
+			#print seq2
 			if seq2 != seq:
 				if seq2[:i] == overlap:
-					print seq[:(len(seq)-1)] + seq2
-					return seq[:(len(seq)-1)] + seq2
+					#print seq[:(len(seq)-1)] + seq2
+					return seq[:len(seq)-i] + seq2
 
 def shortest_contig(seq_list):
 	""" Iteratively create overlapping superstrings until only one is left
@@ -54,25 +67,22 @@ def shortest_contig(seq_list):
 	while len(seq_list) > 1:
 		
 		new_list = []
+		#print seq_list
 		
 		for seq in seq_list:
 			if seq != None:
 				match = match_seq(seq, seq_list)
-			if match != []:
+			if match != None:
 				new_list.append(match)
 
 		seq_list = new_list
-		#print seq_list
-
 	return seq_list[0]
 
 if __name__ == '__main__':
 	
 	# parse fasta file containing the fasta sequences to the variable seqs
-	seqs = parse_fasta(open(sys.argv[1]).read())
-	
-	# find the shortest superstring.
-	results = shortest_contig(seqs)
+	seqs = parse_fasta(sys.argv[1])
 
-	print (shortest_contig(results))
+	# find the shortest superstring.
+	print (shortest_contig(seqs))
 
