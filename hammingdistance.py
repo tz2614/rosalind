@@ -18,11 +18,11 @@ def HammingDistance(s, t):
 #    s = list(map(int, s()))
 #    t = list(map(int, t()))
     dist = 0
-    for i in range(len(p)):
+    for i in range(len(s)):
         if s[i] != t[i]:
             dist += 1
     return dist
 
-s = "CAGAAAGGAAGGTCCCCATACACCGACGCACCAGTTTA"
-t = "CACGCCGTATGCATAAACGAGCCGCACGAACCAGAGAG"
+p = "CAGAAAGGAAGGTCCCCATCACCGACGCACCAGTTTA"
+q = "CACGCCGTATGCATAAACGAGCCGCACGAACCAGAGAG"
 print HammingDistance(p, q)
