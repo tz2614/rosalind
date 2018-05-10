@@ -1,4 +1,4 @@
-#! usr/bin.env python
+#! usr/bin/env python
 
 """
 Problem: Motzkin Numbers and RNA Secondary Structures
@@ -14,17 +14,16 @@ import sys
 
 def motz_number(seq):
 
-	match = {'A':'U', 'U':'A', 'C':'G', 'G':'C'}
-	prev = {}
-    
-    #Return the number of noncrossing matchings of basepair edges.
+    # Return the number of noncrossing matchings of basepair edges.
+    # Only one possible match for a seq of length one.
 	if len(seq) <= 1:
 		return 1
-	#avoid recalculating a sequence if we already done so.
+	
+	# avoid recalculating a sequence if we already done so.
 	if seq in prev:
 		return prev[seq]
 
-	#otherwise do the calculation and add it to the dictionary.
+	# otherwise do the calculation and add it to the dictionary.
 	else:
 		prev[seq] = motz_number(seq[1:])
 
@@ -36,11 +35,17 @@ def motz_number(seq):
 
 if __name__ == "__main__":
 
-	dataset = sys.argv[1]
-	with open(dataset) as data_file:
-		data_file.readline()
-		seq = data_file.read().replace("\n", "").replace('\r', '')
+	match = {'A':'U', 'U':'A', 'C':'G', 'G':'C'}
+	prev = {}
+	seq = ""
 
+	dataset = sys.argv[1]
+	with open(dataset, 'r') as data_file:
+		for line in data_file:
+			if line.startswith(">"):
+				pass
+			else:
+				seq += line.replace("\n", "").replace("\r", "")
 
 	print (motz_number(seq) % 1000000)
 

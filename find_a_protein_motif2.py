@@ -22,8 +22,6 @@ def process_uniprots(uniprot_ids):
             print(" ".join(motifs))
 
 if __name__ == '__main__':
-
-    with open(sys.argv[1], 'r') as f:
-        process_uniprots(f.read().strip().split('\n'))
-
-
+    filename = sys.argv[1]
+    with open(filename, 'r') as data_file:
+        process_uniprots(data_file.read().strip().split('\n'))
